@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen bg-neutral-900 text-neutral-100",
+          "min-h-screen bg-neutral-100 text-neutral-100",
           inter.className,
         )}
       >
