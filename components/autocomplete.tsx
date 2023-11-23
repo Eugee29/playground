@@ -2,12 +2,11 @@
 
 import { useFetch } from "@/hooks/useFetch";
 import { cn } from "@/utils/cn";
-import { sleep } from "@/utils/sleep";
 import { useAutocomplete } from "@mui/base";
 import { Popper } from "@mui/base/Popper";
 import { unstable_useForkRef as useForkRef } from "@mui/utils";
-import { ChevronDown, LoaderIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { ChevronDown, Loader2, X } from "lucide-react";
+import { useRef, useState } from "react";
 
 interface Entry {
   API: string;
@@ -19,12 +18,13 @@ interface Entry {
 }
 
 export default function Autocomplete() {
-  const [query, setQuery] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  const [value, setValue] = useState<Entry[]>([]);
 
   const { data, loading } = useFetch<{
     count: number;
     entries: Entry[] | null;
-  }>(`https://api.publicapis.org/entries?title=${query}`);
+  }>(`https://api.publicapis.org/entries?title=${inputValue}`);
 
   const options = data?.entries || [];
 
@@ -34,17 +34,23 @@ export default function Autocomplete() {
     getListboxProps,
     getOptionProps,
     getPopupIndicatorProps,
+    getTagProps,
+    setAnchorEl,
     popupOpen,
     anchorEl,
-    setAnchorEl,
     groupedOptions,
-    expanded,
+    focused,
   } = useAutocomplete({
     options,
+    value,
+    inputValue,
+    multiple: true,
+    disableCloseOnSelect: true,
     filterOptions: (options) => options,
-    isOptionEqualToValue: (option, value) => option.API === value.API,
-    onChange: (_, value) => console.log(value),
-    onInputChange: (_, value) => setQuery(value),
+    isOptionEqualToValue: (option, value) =>
+      option.Description === value.Description,
+    onChange: (_, value) => setValue(value),
+    onInputChange: (_, value) => setInputValue(value),
     getOptionLabel: (option) => option.API,
   });
 
@@ -54,29 +60,46 @@ export default function Autocomplete() {
   return (
     <>
       <div
-        className="group flex w-80 items-center rounded-lg bg-white text-neutral-800 shadow transition-all hover:bg-neutral-100"
+        className="group flex w-80 flex-wrap gap-1 rounded-lg bg-white p-1.5 text-neutral-800 shadow transition-all hover:bg-neutral-100"
         {...getRootProps()}
         ref={rootRef}
       >
-        <input
-          placeholder=""
-          className="peer flex-1 bg-transparent px-3 py-1.5 outline-none"
-          {...getInputProps()}
-        />
-
-        {expanded && loading && (
-          <LoaderIcon className="animate-spin-slow mx-1.5 h-6 w-6 text-neutral-400" />
-        )}
-        <button
-          className="my-1.5 mr-1.5 rounded p-0.5 hover:bg-neutral-200"
-          {...getPopupIndicatorProps()}
-        >
-          <ChevronDown
-            className={cn("h-6 w-6 transition-all", {
-              "rotate-180": popupOpen,
-            })}
+        {value.map((value, index) => {
+          const { onDelete, key, ...rest } = getTagProps({ index });
+          return (
+            <button
+              key={key}
+              {...rest}
+              type="button"
+              className="flex h-7 items-center gap-0.5 rounded border px-1 text-sm hover:text-red-900"
+              onClick={onDelete}
+            >
+              {value.API}
+              <X className="h-3.5 w-3.5" />
+            </button>
+          );
+        })}
+        <div className="flex flex-1 items-center">
+          <input
+            placeholder=""
+            className="peer h-full w-0 min-w-[60px] flex-1 bg-transparent px-1.5 outline-none"
+            {...getInputProps()}
           />
-        </button>
+
+          {focused && loading && inputValue && (
+            <Loader2 className="mx-1.5 h-5 w-5 animate-spin text-neutral-400" />
+          )}
+          <button
+            className="rounded p-0.5 hover:bg-neutral-200"
+            {...getPopupIndicatorProps()}
+          >
+            <ChevronDown
+              className={cn("h-6 w-6 transition-all", {
+                "rotate-180": popupOpen,
+              })}
+            />
+          </button>
+        </div>
       </div>
 
       <Popper open={popupOpen} anchorEl={anchorEl}>

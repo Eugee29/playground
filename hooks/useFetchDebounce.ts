@@ -2,13 +2,17 @@ import { sleep } from "@/utils/sleep";
 import axios, { AxiosRequestConfig } from "axios";
 import { useEffect, useState } from "react";
 
-export const useFetch = <T>(url: string, options?: AxiosRequestConfig<any>) => {
+export const useFetchDebounce = <T>(
+  url: string,
+  debounce: number,
+  options?: AxiosRequestConfig<any>,
+) => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
 
   useEffect(() => {
-    (async () => {
+    const timeout = setTimeout(async () => {
       try {
         setLoading(true);
         await sleep(1000); // for testing purposes
@@ -19,8 +23,10 @@ export const useFetch = <T>(url: string, options?: AxiosRequestConfig<any>) => {
       } finally {
         setLoading(false);
       }
-    })();
-  }, [url, options]);
+    }, debounce);
+
+    return () => clearTimeout(timeout);
+  }, [url, debounce, options]);
 
   return { data, error, loading };
 };
