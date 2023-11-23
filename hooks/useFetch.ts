@@ -1,8 +1,9 @@
-import axios, { AxiosResponse } from "axios";
+import { sleep } from "@/utils/sleep";
+import axios from "axios";
 import { useEffect, useState } from "react";
 
-export const useFetch = (url: string, options?: { method: string }) => {
-  const [data, setData] = useState<AxiosResponse<any, any> | null>(null);
+export const useFetch = <T>(url: string, options?: { method?: string }) => {
+  const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
 
@@ -10,7 +11,8 @@ export const useFetch = (url: string, options?: { method: string }) => {
     (async () => {
       try {
         setLoading(true);
-        const data = await axios(url, { method: options?.method });
+        await sleep(1e3); // 1 sec delay for testing purposes
+        const { data } = await axios(url, { method: options?.method });
         setData(data);
       } catch (error) {
         setError(error);
