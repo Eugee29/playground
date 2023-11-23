@@ -5,7 +5,8 @@ import Autocomplete from "@/components/autocomplete";
 export default function SearchForm() {
   return (
     <form className="rounded-2xl bg-neutral-700 p-12 shadow">
-      <Autocomplete options={top100Films} />
+      <Autocomplete />
+      <AutocompleteArk />
     </form>
   );
 }
