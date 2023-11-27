@@ -19,14 +19,18 @@ interface Entry {
 
 export default function Autocomplete() {
   const [inputValue, setInputValue] = useState("");
-  const [value, setValue] = useState<Entry[]>([]);
+  const [value, setValue] = useState<string[]>([]);
 
-  const { data, loading } = useFetch<{
-    count: number;
-    entries: Entry[] | null;
-  }>(`https://api.publicapis.org/entries?title=${inputValue}`);
+  // const { data, loading } = useFetch<{
+  //   count: number;
+  //   entries: Entry[] | null;
+  // }>(`https://api.publicapis.org/entries?title=${inputValue}`);
 
-  const options = data?.entries || [];
+  const { data, loading } = useFetch<string[]>(`/cities?name=${inputValue}`);
+
+  const options = data || [];
+
+  // const options = data?.entries || [];
 
   const {
     getRootProps,
@@ -45,13 +49,12 @@ export default function Autocomplete() {
     value,
     inputValue,
     multiple: true,
-    disableCloseOnSelect: true,
     filterOptions: (options) => options,
-    isOptionEqualToValue: (option, value) =>
-      option.Description === value.Description,
+    // isOptionEqualToValue: (option, value) =>
+    //   option.Description === value.Description,
     onChange: (_, value) => setValue(value),
     onInputChange: (_, value) => setInputValue(value),
-    getOptionLabel: (option) => option.API,
+    // getOptionLabel: (option) => option.API,
   });
 
   const ref = useRef(null);
@@ -60,7 +63,8 @@ export default function Autocomplete() {
   return (
     <>
       <div
-        className="group flex w-80 flex-wrap gap-1 rounded-lg bg-white p-1.5 text-neutral-800 shadow transition-all hover:bg-neutral-100"
+        dir="rtl"
+        className="group flex w-80 flex-wrap gap-1 rounded-lg bg-white p-1.5 text-neutral-800 shadow transition-all hover:bg-neutral-50"
         {...getRootProps()}
         ref={rootRef}
       >
@@ -71,10 +75,10 @@ export default function Autocomplete() {
               key={key}
               {...rest}
               type="button"
-              className="flex h-7 items-center gap-0.5 rounded border px-1 text-sm hover:text-red-900"
+              className="flex h-7 items-center gap-0.5 rounded border px-1 text-sm transition-all duration-100 hover:bg-neutral-200"
               onClick={onDelete}
             >
-              {value.API}
+              {value}
               <X className="h-3.5 w-3.5" />
             </button>
           );
@@ -86,7 +90,7 @@ export default function Autocomplete() {
             {...getInputProps()}
           />
 
-          {focused && loading && inputValue && (
+          {focused && loading && (
             <Loader2 className="mx-1.5 h-5 w-5 animate-spin text-neutral-400" />
           )}
           <button
@@ -120,7 +124,7 @@ export default function Autocomplete() {
                   key={index}
                   {...optionProps}
                 >
-                  {option.API}
+                  {option}
                 </li>
               );
             })}
