@@ -1,32 +1,32 @@
-"use client";
+"use client"
 
-import { useFetch } from "@/hooks/useFetch";
-import { Combobox, Portal } from "@ark-ui/react";
-import { ChevronDownIcon, LoaderIcon, X } from "lucide-react";
-import { useState } from "react";
+import { useFetch } from "@/hooks/useFetch"
+import { Combobox, Portal } from "@ark-ui/react"
+import { ChevronDownIcon, LoaderIcon, X } from "lucide-react"
+import { useState } from "react"
 
 interface Entry {
-  API: string;
-  Auth: string;
-  Category: string;
-  Description: string;
-  HTTPS: boolean;
-  Link: string;
+  API: string
+  Auth: string
+  Category: string
+  Description: string
+  HTTPS: boolean
+  Link: string
 }
 
 export default function ArkAutocomplete() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("")
 
   const { data, loading } = useFetch<{
-    count: number;
-    entries: Entry[] | null;
-  }>(`https://api.publicapis.org/entries?title=${query}`);
+    count: number
+    entries: Entry[] | null
+  }>(`https://api.publicapis.org/entries?title=${query}`)
 
   const items =
     data?.entries?.map((entry) => ({
       value: entry.API,
       ...entry,
-    })) || [];
+    })) || []
 
   // const filteredItems =
   //   query === ""
@@ -47,7 +47,7 @@ export default function ArkAutocomplete() {
             <X className="h-5 w-5" />
           </Combobox.ClearTrigger> */}
           {loading && (
-            <LoaderIcon className="animate-spin-slow mx-1.5 h-6 w-6 text-neutral-400" />
+            <LoaderIcon className="mx-1.5 h-6 w-6 animate-spin-slow text-neutral-400" />
           )}
           <Combobox.Trigger className="group rounded p-0.5 transition-all hover:bg-neutral-200 ">
             <ChevronDownIcon className="h-5 w-5 transition-all group-data-[state=open]:rotate-180" />
@@ -75,5 +75,5 @@ export default function ArkAutocomplete() {
         </Portal>
       </Combobox.Root>
     </>
-  );
+  )
 }

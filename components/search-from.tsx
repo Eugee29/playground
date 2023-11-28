@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import Autocomplete from "@/components/autocomplete";
-import ArkAutocomplete from "@/components/autocomplete-ark";
+import Autocomplete from "@/components/autocomplete"
+import ArkAutocomplete from "@/components/autocomplete-ark"
 
 export default function SearchForm() {
   return (
@@ -9,5 +9,5 @@ export default function SearchForm() {
       <Autocomplete />
       {/* <ArkAutocomplete /> */}
     </form>
-  );
+  )
 }
