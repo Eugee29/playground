@@ -1,9 +1,9 @@
-import SearchForm from "@/components/search-from";
+import SearchForm from "@/components/search-from"
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <SearchForm />
     </main>
-  );
+  )
 }
