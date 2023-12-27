@@ -5,7 +5,7 @@ import { City } from "@/data/cities"
 import { cn } from "@/utils/cn"
 import { sleep } from "@/utils/sleep"
 import axios from "axios"
-import { Check, ChevronDown, X } from "lucide-react"
+import { Check, ChevronDown, Loader2, X } from "lucide-react"
 import { useState } from "react"
 import useSWR from "swr"
 
@@ -34,7 +34,7 @@ export default function AutocompleteDemo() {
       onInputChange={(_, value) => setInputValue(value)}
       getOptionLabel={(city) => (city as City).name}
     >
-      {({ popupOpen, groupedOptions }) => (
+      {({ popupOpen, groupedOptions, focused }) => (
         <>
           <div
             className="flex w-80 flex-wrap gap-1 rounded-lg bg-white p-1.5 text-neutral-800 shadow transition-all hover:bg-neutral-50"
@@ -59,6 +59,9 @@ export default function AutocompleteDemo() {
                 placeholder=""
                 className="peer h-full w-0 min-w-[60px] flex-1 bg-transparent px-1.5 outline-none"
               />
+              {focused && isLoading && (
+                <Loader2 className="mx-1.5 h-5 w-5 animate-spin text-neutral-400" />
+              )}
               <Autocomplete.PopupIndicator className="rounded p-0.5 hover:bg-neutral-200">
                 <ChevronDown
                   className={cn("h-6 w-6 transition-all", {
