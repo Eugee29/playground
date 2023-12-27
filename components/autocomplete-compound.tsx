@@ -31,10 +31,8 @@ type RootProps = UseAutocompleteProps<unknown, boolean, boolean, boolean> & {
 }
 const Root = ({ children, ...props }: RootProps) => {
   const autocomplete = useAutocomplete(props)
-
   const ref = useRef(null)
   const rootRef = useForkRef(ref, autocomplete.setAnchorEl)
-
   return (
     <AutocompleteContext.Provider value={autocomplete}>
       <div ref={rootRef} {...autocomplete.getRootProps()}>
@@ -60,21 +58,18 @@ const Tag = ({ index, children }: TagProps) => {
 type InputProps = React.ComponentProps<"input">
 const Input = (props: InputProps) => {
   const { getInputProps } = useAutocompleteContext()
-
   return <input {...props} {...getInputProps()} />
 }
 
 type PopupIndicatorProps = React.ComponentProps<"button">
 const PopupIndicator = (props: PopupIndicatorProps) => {
   const { getPopupIndicatorProps } = useAutocompleteContext()
-
   return <button {...props} {...getPopupIndicatorProps()} />
 }
 
 type ListBoxProps = React.ComponentProps<"ul">
 const Listbox = (props: ListBoxProps) => {
   const { popupOpen, anchorEl, getListboxProps } = useAutocompleteContext()
-
   return (
     <Popper open={popupOpen} anchorEl={anchorEl}>
       <ul
