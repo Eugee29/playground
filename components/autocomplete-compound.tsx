@@ -42,6 +42,18 @@ const Root = ({ children, ...props }: RootProps) => {
   )
 }
 
+type LabelProps = React.ComponentProps<"label">
+const Label = (props: LabelProps) => {
+  const { getInputLabelProps } = useAutocompleteContext()
+  return <label {...props} {...getInputLabelProps()} />
+}
+
+type ClearProps = React.ComponentProps<"button">
+const Clear = (props: ClearProps) => {
+  const { getClearProps } = useAutocompleteContext()
+  return <button {...props} {...getClearProps()} />
+}
+
 type TagProps = { index: number } & {
   children?: (props: {
     "data-tag-index": number
@@ -61,10 +73,16 @@ const Input = (props: InputProps) => {
   return <input {...props} {...getInputProps()} />
 }
 
-type PopupIndicatorProps = React.ComponentProps<"button">
-const PopupIndicator = (props: PopupIndicatorProps) => {
+type IndicatorProps = React.ComponentProps<"button">
+const Indicator = (props: IndicatorProps) => {
   const { getPopupIndicatorProps } = useAutocompleteContext()
-  return <button {...props} {...getPopupIndicatorProps()} />
+  return (
+    <button
+      aria-label="popup indicator"
+      {...props}
+      {...getPopupIndicatorProps()}
+    />
+  )
 }
 
 type ListBoxProps = React.ComponentProps<"ul">
@@ -95,9 +113,11 @@ const Option = ({ option, index, ...props }: OptionProps) => {
 
 const Autocomplete = {
   Root,
+  Label,
+  Clear,
   Tag,
   Input,
-  PopupIndicator,
+  Indicator,
   Listbox,
   Option,
 }

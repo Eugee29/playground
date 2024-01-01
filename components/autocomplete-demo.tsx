@@ -2,8 +2,8 @@
 
 import Autocomplete from "@/components/autocomplete-compound"
 import { City } from "@/data/cities"
+import { useDebounce } from "@/hooks/useDebounce"
 import { cn } from "@/utils/cn"
-import { sleep } from "@/utils/sleep"
 import axios from "axios"
 import { Check, ChevronDown, Loader2, X } from "lucide-react"
 import { useState } from "react"
@@ -11,12 +11,15 @@ import useSWR from "swr"
 
 export default function AutocompleteDemo() {
   const [inputValue, setInputValue] = useState("")
+  const debouncedInputValue = useDebounce(inputValue, 500)
   const [value, setValue] = useState<City[]>([])
 
-  const { data, isLoading } = useSWR(`/api/cities?name=${inputValue}`, fetcher)
+  const { data, isLoading } = useSWR(
+    `/api/cities?name=${debouncedInputValue}`,
+    fetcher,
+  )
 
   async function fetcher(url: string) {
-    await sleep(1000)
     const { data } = await axios.get<City[]>(url)
     return data
   }
@@ -30,12 +33,14 @@ export default function AutocompleteDemo() {
       inputValue={inputValue}
       multiple
       autoComplete
+      filterOptions={(options) => options}
       onChange={(_, value) => setValue(value as City[])}
       onInputChange={(_, value) => setInputValue(value)}
       getOptionLabel={(city) => (city as City).name}
     >
       {({ popupOpen, groupedOptions, focused }) => (
-        <>
+        <div className="flex flex-col items-end gap-0.5">
+          <Autocomplete.Label>בחר עיר מהרשימה</Autocomplete.Label>
           <div
             className="flex w-80 flex-wrap gap-1 rounded-lg bg-white p-1.5 text-neutral-800 shadow transition-all hover:bg-neutral-50"
             dir="rtl"
@@ -62,13 +67,13 @@ export default function AutocompleteDemo() {
               {focused && isLoading && (
                 <Loader2 className="mx-1.5 h-5 w-5 animate-spin text-neutral-400" />
               )}
-              <Autocomplete.PopupIndicator className="rounded p-0.5 hover:bg-neutral-200">
+              <Autocomplete.Indicator className="rounded p-0.5 hover:bg-neutral-200">
                 <ChevronDown
                   className={cn("h-6 w-6 transition-all", {
                     "rotate-180": popupOpen,
                   })}
                 />
-              </Autocomplete.PopupIndicator>
+              </Autocomplete.Indicator>
             </div>
           </div>
           {!isLoading && (
@@ -97,7 +102,7 @@ export default function AutocompleteDemo() {
               )}
             </Autocomplete.Listbox>
           )}
-        </>
+        </div>
       )}
     </Autocomplete.Root>
   )

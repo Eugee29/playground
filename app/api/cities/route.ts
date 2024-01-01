@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     .filter((city) => city.name.includes(cityName))
     .splice(0, 8)
 
-  await sleep(500) // simulate slow network
+  await sleep(1000) // simulate slow network
 
   return NextResponse.json(filteredCities)
 }
