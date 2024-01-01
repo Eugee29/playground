@@ -85,8 +85,8 @@ const Indicator = (props: IndicatorProps) => {
   )
 }
 
-type ListBoxProps = React.ComponentProps<"ul">
-const Listbox = (props: ListBoxProps) => {
+type ListProps = React.ComponentProps<"ul">
+const List = (props: ListProps) => {
   const { popupOpen, anchorEl, getListboxProps } = useAutocompleteContext()
   return (
     <Popper open={popupOpen} anchorEl={anchorEl}>
@@ -118,7 +118,7 @@ const Autocomplete = {
   Tag,
   Input,
   Indicator,
-  Listbox,
+  List,
   Option,
 }
 

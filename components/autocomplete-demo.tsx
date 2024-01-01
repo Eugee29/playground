@@ -77,7 +77,7 @@ export default function AutocompleteDemo() {
             </div>
           </div>
           {!isLoading && (
-            <Autocomplete.Listbox
+            <Autocomplete.List
               dir="rtl"
               className="scrollbar scrollbar-thumb-neutral-200 scrollbar-thumb-rounded-lg scrollbar-w-1.5 my-1 max-h-80 overflow-y-auto rounded-lg border bg-white p-3 text-neutral-800 shadow"
             >
@@ -100,7 +100,7 @@ export default function AutocompleteDemo() {
                   ))}
                 </>
               )}
-            </Autocomplete.Listbox>
+            </Autocomplete.List>
           )}
         </div>
       )}
