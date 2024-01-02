@@ -1,12 +1,12 @@
 "use client"
 
-import Autocomplete from "@/components/autocomplete-compound"
 import { City } from "@/data/cities"
 import { useDebounce } from "@/hooks/useDebounce"
 import { cn } from "@/utils/cn"
 import axios from "axios"
 import { Check, ChevronDown, Loader2, X } from "lucide-react"
 import { useState } from "react"
+import Autocomplete from "react-compound-autocomplete"
 import useSWR from "swr"
 
 export default function AutocompleteDemo() {
