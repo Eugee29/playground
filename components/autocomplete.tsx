@@ -117,6 +117,7 @@ export default function Autocomplete() {
                     option,
                     index,
                   }) as { key: React.Key }
+
                   return (
                     <li
                       className="group/option flex cursor-pointer items-center justify-between rounded-lg px-3 py-1.5 aria-selected:text-blue-500 [&.Mui-focused]:bg-neutral-200"

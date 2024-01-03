@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        darkBlue: "#16254f",
+      },
       animation: {
         "spin-slow": "spin 3s linear infinite",
       },

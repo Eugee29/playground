@@ -108,6 +108,7 @@ const Option = ({ option, index, ...props }: OptionProps) => {
   const { key, ...optionProps } = getOptionProps({ option, index }) as {
     key: React.Key
   }
+
   return <li {...props} {...optionProps} />
 }
 
