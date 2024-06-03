@@ -6,7 +6,6 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-center gap-20 bg-neutral-50 text-neutral-800">
       <AutocompleteDemo />
       <HeadlessAutocomplete />
-      {/* <Autocomplete /> */}
     </main>
   )
 }

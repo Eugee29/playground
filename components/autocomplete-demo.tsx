@@ -39,69 +39,64 @@ export default function AutocompleteDemo() {
       getOptionLabel={(city) => (city as City).name}
     >
       {({ popupOpen, groupedOptions, focused }) => (
-        <div className="flex flex-col items-end gap-0.5">
-          <Autocomplete.Label>בחר עיר מהרשימה</Autocomplete.Label>
-          <div
-            className="flex w-80 flex-wrap gap-1 rounded-lg bg-white p-1.5 text-neutral-800 shadow transition-all hover:bg-neutral-50"
-            dir="rtl"
-          >
-            {value.map((value, index) => (
-              <Autocomplete.Tag key={index} index={index}>
-                {({ onDelete, ...props }) => (
-                  <button
-                    {...props}
-                    onClick={onDelete}
-                    className="flex h-7 items-center gap-0.5 rounded border px-1 text-sm transition-all duration-100 hover:bg-neutral-200"
-                  >
-                    {value.name}
-                    <X className="h-3.5 w-3.5" />
-                  </button>
-                )}
-              </Autocomplete.Tag>
-            ))}
-            <div className="flex flex-1 items-center">
-              <Autocomplete.Input
-                placeholder=""
-                className="peer h-full w-0 min-w-[60px] flex-1 bg-transparent px-1.5 outline-none"
+        <div
+          className="flex w-80 flex-wrap gap-1 rounded-lg bg-white p-1.5 text-neutral-800 shadow transition hover:bg-neutral-50"
+          dir="rtl"
+        >
+          {value.map((value, index) => (
+            <Autocomplete.Tag key={index} index={index}>
+              {({ onDelete, ...props }) => (
+                <button
+                  {...props}
+                  onClick={onDelete}
+                  className="flex h-7 items-center gap-0.5 rounded border px-1 text-sm transition-all duration-100 hover:bg-neutral-200"
+                >
+                  {value.name}
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              )}
+            </Autocomplete.Tag>
+          ))}
+          <div className="flex flex-1 items-center">
+            <Autocomplete.Input
+              placeholder=""
+              className="peer h-full w-0 min-w-[60px] flex-1 bg-transparent px-1.5 outline-none"
+            />
+            {focused && isLoading && (
+              <Loader2 className="mx-1.5 h-5 w-5 animate-spin text-neutral-400" />
+            )}
+            <Autocomplete.Indicator className="rounded p-0.5 hover:bg-neutral-200">
+              <ChevronDown
+                className={cn("h-6 w-6 transition-all", {
+                  "rotate-180": popupOpen,
+                })}
               />
-              {focused && isLoading && (
-                <Loader2 className="mx-1.5 h-5 w-5 animate-spin text-neutral-400" />
-              )}
-              <Autocomplete.Indicator className="rounded p-0.5 hover:bg-neutral-200">
-                <ChevronDown
-                  className={cn("h-6 w-6 transition-all", {
-                    "rotate-180": popupOpen,
-                  })}
-                />
-              </Autocomplete.Indicator>
-            </div>
+            </Autocomplete.Indicator>
           </div>
-          {!isLoading && (
-            <Autocomplete.List
-              dir="rtl"
-              className="scrollbar scrollbar-thumb-neutral-200 scrollbar-thumb-rounded-lg scrollbar-w-1.5 my-1 max-h-80 overflow-y-auto rounded-lg border bg-white p-3 text-neutral-800 shadow"
-            >
-              {!groupedOptions.length ? (
-                <span className="text-sm text-neutral-600">
-                  לא נמצאו תוצאות...
-                </span>
-              ) : (
-                <>
-                  {(groupedOptions as typeof options).map((option, index) => (
-                    <Autocomplete.Option
-                      key={index}
-                      className="group/option flex cursor-pointer items-center justify-between rounded-lg px-3 py-1.5 aria-selected:text-blue-500 [&.Mui-focused]:bg-neutral-200"
-                      option={option}
-                      index={index}
-                    >
-                      {option.name}
-                      <Check className="hidden h-4 w-4 group-aria-selected/option:block" />
-                    </Autocomplete.Option>
-                  ))}
-                </>
-              )}
-            </Autocomplete.List>
-          )}
+          <Autocomplete.List
+            dir="rtl"
+            className="scrollbar scrollbar-thumb-neutral-200 scrollbar-thumb-rounded-lg scrollbar-w-1.5 my-1 max-h-80 overflow-y-auto rounded-lg border bg-white p-3 text-neutral-800 shadow empty:hidden"
+          >
+            {!groupedOptions.length ? (
+              <span className="text-sm text-neutral-600">
+                לא נמצאו תוצאות...
+              </span>
+            ) : (
+              <>
+                {(groupedOptions as typeof options).map((option, index) => (
+                  <Autocomplete.Option
+                    key={index}
+                    className="group/option flex cursor-pointer items-center justify-between rounded-lg px-3 py-1.5 aria-selected:text-blue-500 [&.Mui-focused]:bg-neutral-200"
+                    option={option}
+                    index={index}
+                  >
+                    {option.name}
+                    <Check className="hidden h-4 w-4 group-aria-selected/option:block" />
+                  </Autocomplete.Option>
+                ))}
+              </>
+            )}
+          </Autocomplete.List>
         </div>
       )}
     </Autocomplete.Root>
